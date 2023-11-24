@@ -9,10 +9,6 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hi!");
-});
-
 const start = async () => {
   mongoose.connect(process.env.DB_CONNECTION_STRING!);
   app.listen(port, () => {
