@@ -1,0 +1,16 @@
+.menu {
+  width: 100%;
+  background-color: black;
+}
+
+.sider {
+  height: 100vh;
+  transition: width 1s ease;
+  overflow-y: auto;
+  background-color: rgb(0, 21, 41);
+}
+
+.roll-button {
+  background-color: transparent;
+  margin: 16px;
+}
