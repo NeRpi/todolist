@@ -1,16 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Collapse } from "antd";
 import TodoItem from "./TodoItem";
 import "./Category.css";
 import EditablePanel from "./EditablePanel";
 import { Context } from "../..";
-import { observer } from "mobx-react-lite";
 
 const Category = ({ categories, projectId }) => {
   const { store } = useContext(Context);
 
   const onCategoryUpdate = (data) => {
     store.updateCategory(data);
+  };
+
+  const onCategoryDelete = (data) => {
+    store.deleteCategory(data);
   };
 
   return (
@@ -20,6 +23,7 @@ const Category = ({ categories, projectId }) => {
           category={category}
           key={category._id}
           onCategoryUpdate={onCategoryUpdate}
+          onCategoryDelete={onCategoryDelete}
         >
           {category.todos.map((todo) => (
             <TodoItem
@@ -35,4 +39,4 @@ const Category = ({ categories, projectId }) => {
   );
 };
 
-export default observer(Category);
+export default Category;

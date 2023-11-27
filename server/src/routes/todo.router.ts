@@ -4,6 +4,7 @@ import todoController from "../controllers/todo.controller.ts";
 const router = Router();
 
 router.get("/", todoController.getAll);
+router.get("/upcoming", todoController.getUpcoming);
 router.get("/:id", todoController.getOne);
 router.post("/:categoryId", todoController.create);
 router.put("/:id", todoController.update);

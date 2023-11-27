@@ -30,7 +30,6 @@ export default class CategoryRepository {
 
   public async updateById(categoryId: string, categoryDTO: CategoryDTO) {
     try {
-      console.log(categoryId, categoryDTO);
       return await Category.findByIdAndUpdate(categoryId, categoryDTO);
     } catch (e) {
       console.error(e);

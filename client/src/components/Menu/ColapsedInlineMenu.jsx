@@ -6,6 +6,9 @@ import {
   ProfileOutlined,
   LogoutOutlined,
   PlusCircleOutlined,
+  CalendarOutlined,
+  DeleteOutlined,
+  ProjectOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
@@ -24,6 +27,15 @@ const CollapsedInlineMenu = () => {
 
   function handleMenuClick({ key }) {
     if (key) navigate(key);
+  }
+
+  function handleDeleteBtn(e, projectId) {
+    e.stopPropagation();
+    store.deleteProject(projectId);
+  }
+
+  function cropString(str, maxLenght) {
+    return str.length <= maxLenght ? str : str.substring(0, maxLenght) + "...";
   }
 
   return (
@@ -57,18 +69,36 @@ const CollapsedInlineMenu = () => {
           collapsed={collapsed}
           onClick={handleMenuClick}
         >
-          <Menu.Item
-            key={""}
-            icon={<PlusCircleOutlined />}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Добавить проект
+          <Menu.Item key={"/"} icon={<CalendarOutlined />}>
+            Предстоящие
           </Menu.Item>
-          {store.projectList.map((val) => (
-            <Menu.Item key={`/projects/${val._id}`} icon={<ProfileOutlined />}>
-              {val.name}
+          <Menu.SubMenu
+            title="Мои проекты"
+            key="projects"
+            icon={<ProjectOutlined />}
+          >
+            <Menu.Item
+              key={""}
+              icon={<PlusCircleOutlined />}
+              onClick={() => setIsModalOpen(true)}
+            >
+              Добавить проект
             </Menu.Item>
-          ))}
+            {store.projectList.map((val) => (
+              <Menu.Item
+                key={`/projects/${val._id}`}
+                icon={<ProfileOutlined />}
+              >
+                <div className="project-items">
+                  {cropString(val.name, 10)}{" "}
+                  <Button
+                    icon={<DeleteOutlined />}
+                    onClick={(e) => handleDeleteBtn(e, val._id)}
+                  />
+                </div>
+              </Menu.Item>
+            ))}
+          </Menu.SubMenu>
         </Menu>
       </Layout.Sider>
       <ProjectAddModal

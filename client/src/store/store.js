@@ -1,13 +1,14 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import TodoService from "../services/TodoService";
 import AuthService from "../services/AuthService";
 import axios from "axios";
+import _ from "lodash";
 import { API_URL } from "../http";
 
 export default class Store {
   isAuth = false;
   projectList = [];
-  count = 0;
+  updcomingList = {};
 
   constructor() {
     makeAutoObservable(this);
@@ -59,7 +60,19 @@ export default class Store {
 
   async getTodos() {
     TodoService.getAll().then((response) => {
-      this.projectList = response.data.projects;
+      runInAction(() => {
+        if (!_.isEqual(this.projectList, response.data.projects))
+          this.projectList = response.data.projects;
+      });
+    });
+  }
+
+  async getUpcoming() {
+    TodoService.getUpcoming().then((response) => {
+      runInAction(() => {
+        if (!_.isEqual(this.updcomingList, response.data))
+          this.updcomingList = response.data;
+      });
     });
   }
 
@@ -67,14 +80,18 @@ export default class Store {
     try {
       const response = await TodoService.createTodo(categoryId, todo);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
 
   async updateTodo(todo) {
     try {
+      console.log(todo);
+
       const response = await TodoService.updateTodo(todo);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -83,6 +100,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteTodo(todoId);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -91,6 +109,7 @@ export default class Store {
     try {
       const response = await TodoService.updateCategory(category);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -99,6 +118,7 @@ export default class Store {
     try {
       const response = await TodoService.createCategory(projectId, data);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -107,6 +127,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteCategory(id);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -115,6 +136,7 @@ export default class Store {
     try {
       const response = await TodoService.getProject(id);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -123,6 +145,7 @@ export default class Store {
     try {
       const response = await TodoService.createProject(data);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -131,6 +154,7 @@ export default class Store {
     try {
       const response = await TodoService.updateProject(project);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -139,6 +163,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteProject(project);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }

@@ -16,7 +16,10 @@ const ProjectAddModal = ({ isOpen, onClose }) => {
       <Modal
         open={isOpen}
         onOk={onHandleClick}
-        onCancel={onClose}
+        onCancel={() => {
+          setName("");
+          onClose();
+        }}
         className="todo-modal"
         width="50vw"
       >
