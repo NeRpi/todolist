@@ -1,17 +1,25 @@
 import express, { Express, Request, Response } from "express";
+import mongoose from "mongoose";
 import cors from "cors";
-import "dotenv";
+import routers from "./routes/index.ts";
+import errorHandlingMiddleware from "./middleware/error.handling.middleware.ts";
+import "dotenv/config";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ credentials: true, origin: process.env.API_URL }));
 app.use(express.json());
+app.use("/api", routers);
+app.use(errorHandlingMiddleware);
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hi!");
-});
+const start = async () => {
+  mongoose.connect(process.env.DB_CONNECTION_STRING!);
+  app.listen(port, () => {
+    console.log(`Server is running ad localhost:${port}`);
+  });
+};
 
-app.listen(port, () => {
-  console.log(`Server is running ad localhost:${port}`);
-});
+start();

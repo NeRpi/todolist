@@ -1,0 +1,15 @@
+.ant-input {
+  background-color: transparent;
+  border: transparent;
+  color: white;
+  font-size: 15px;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-collapse
+  .ant-collapse-content {
+  background-color: transparent;
+}
+
+.ant-collapse {
+  background-color: transparent;
+}
