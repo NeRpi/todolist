@@ -48,7 +48,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
       setCategories(findProject.categories);
       if (!category) setCategory(findProject.categories[0]?._id);
     }
-  }, [projects, project]);
+  }, [projects, project, category]);
 
   const unSetParams = () => {
     setName("");
