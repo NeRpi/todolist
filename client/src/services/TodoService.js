@@ -5,6 +5,10 @@ export default class TodoService {
     return $api.get("/projects");
   }
 
+  static async getUpcoming() {
+    return $api.get("/todos/upcoming");
+  }
+
   static async getTodos() {
     return $api.get("/todos");
   }
@@ -42,7 +46,6 @@ export default class TodoService {
   }
 
   static async updateProject(data) {
-    console.log(data);
     return $api.put(`/projects/${data.id}`, data);
   }
 

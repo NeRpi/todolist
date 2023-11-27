@@ -14,3 +14,9 @@
   background-color: transparent;
   margin: 16px;
 }
+
+.project-items {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

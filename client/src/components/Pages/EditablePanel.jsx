@@ -1,6 +1,10 @@
 import { Button, Collapse, Input } from "antd";
 import { useEffect, useState } from "react";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  DeleteOutlined,
+} from "@ant-design/icons";
 import "./EditablePanel.css";
 
 const EditablePanel = (props) => {
@@ -20,6 +24,11 @@ const EditablePanel = (props) => {
       id: props.category._id,
       name: title,
     });
+  };
+
+  const onClickDelete = (e) => {
+    e.stopPropagation();
+    props.onCategoryDelete(props.category._id);
   };
 
   const onHandleInput = (e) => {
@@ -66,6 +75,21 @@ const EditablePanel = (props) => {
                 setTitle(oldTitle);
                 e.stopPropagation();
               }}
+            />
+            <Button
+              value="small"
+              style={{
+                margin: "2px",
+              }}
+              icon={
+                <DeleteOutlined
+                  style={{
+                    width: "12px",
+                    height: "12px",
+                  }}
+                />
+              }
+              onClick={onClickDelete}
             />
           </div>
         }

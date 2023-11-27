@@ -12,6 +12,10 @@ export default class TodoService {
     return await this.todoRepo.getAll(userId);
   }
 
+  public async getUpcoming(userId: string) {
+    return await this.todoRepo.getUpcoming(userId);
+  }
+
   public async getOne(todoId: string) {
     return await this.todoRepo.getById(todoId);
   }

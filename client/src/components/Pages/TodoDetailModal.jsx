@@ -27,7 +27,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
       setProject(data.projectId || "");
       setCategory(data.categoryId || "");
       setDueDate(dayjs(data.todoData.date) || null);
-      setPriority(data.todoData.priority || 1);
+      setPriority(data.todoData.priority || 4);
     }
   }, [mode, data]);
 
@@ -44,28 +44,48 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
   useEffect(() => {
     let findProject;
     if (project) findProject = projects.find((val) => val._id === project);
-    if (findProject) setCategories(findProject.categories);
+    if (findProject) {
+      setCategories(findProject.categories);
+      if (!category) setCategory(findProject.categories[0]?._id);
+    }
   }, [projects, project]);
+
+  const unSetParams = () => {
+    setName("");
+    setDescription("");
+    setPriority(4);
+  };
 
   const onHandleClick = () => {
     if (mode === "create") {
-      store.createTodo(category, { name, description, dueDate, priority });
+      store.createTodo(category, {
+        name,
+        description,
+        date: dueDate,
+        priority,
+      });
     } else if (mode === "edit") {
       if (data.categoryId !== category) {
         store.deleteTodo(data.todoData._id);
-        store.createTodo(category, { name, description, dueDate, priority });
+        store.createTodo(category, {
+          name,
+          description,
+          date: dueDate,
+          priority,
+        });
       } else {
         store.updateTodo({
           id: data.todoData._id,
           name,
           description,
-          date: dueDate,
+          date: dueDate?.add(1, "day"),
           priority,
         });
       }
     }
 
     onClose();
+    unSetParams();
   };
 
   return (
@@ -73,7 +93,10 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
       <Modal
         open={isOpen}
         onOk={onHandleClick}
-        onCancel={onClose}
+        onCancel={() => {
+          onClose();
+          unSetParams();
+        }}
         className="todo-modal"
         width="50vw"
       >
@@ -121,6 +144,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
             <hr />
             <div>Срок выполнения</div>
             <DatePicker
+              disabledTime={true}
               value={dueDate}
               style={{
                 width: "100%",

@@ -15,6 +15,13 @@ class TodoController {
     } catch (e) {}
   };
 
+  getUpcoming = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.todoService.getUpcoming(req.user.id);
+      res.json(result);
+    } catch (e) {}
+  };
+
   getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;

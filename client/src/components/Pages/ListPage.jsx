@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Input } from "antd";
 import { Context } from "../..";
 import TodoDetailModal from "./TodoDetailModal";
@@ -10,19 +10,27 @@ import Category from "./Category";
 import "./ListPage.css";
 import { observer } from "mobx-react-lite";
 
-const ListPage = () => {
+const ListPage = observer(() => {
   const { store } = useContext(Context);
+
   const [isTodo, setIsTodo] = useState(false);
   const [isCategory, setIsCategory] = useState(false);
   const [btnVisible, setBtnVisible] = useState(false);
   const [project, setProject] = useState({});
-
   const [title, setTitle] = useState(project.name || "");
+
+  const navigate = useNavigate();
   const { projectId } = useParams();
 
   useEffect(() => {
-    store.getProject(projectId).then((response) => setProject(response.data));
-  }, [store, projectId]);
+    store
+      .getProject(projectId)
+      .then((response) => {
+        if (response && response.data) setProject(response.data);
+        else navigate("/");
+      })
+      .catch(() => navigate("/"));
+  }, [store, projectId, store.projectList, navigate]);
 
   useEffect(() => {
     setBtnVisible(title !== project.name);
@@ -97,6 +105,6 @@ const ListPage = () => {
       />
     </div>
   );
-};
+});
 
-export default observer(ListPage);
+export default ListPage;

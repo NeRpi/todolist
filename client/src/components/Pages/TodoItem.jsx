@@ -8,6 +8,10 @@ const TodoItem = ({ todoData, projectId, categoryId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { store } = useContext(Context);
 
+  function cropString(str, maxLenght) {
+    return str.length <= maxLenght ? str : str.substring(0, maxLenght) + "...";
+  }
+
   const handleChecked = (checkedValue) => {
     if (checkedValue) {
       store.deleteTodo(todoData._id);
@@ -20,7 +24,9 @@ const TodoItem = ({ todoData, projectId, categoryId }) => {
       <div className="todo-info" onClick={() => setIsModalOpen(true)}>
         <div className="name">{todoData.name}</div>
         <div className="description">
-          {todoData.description ? todoData.description : "Описание..."}
+          {todoData.description
+            ? cropString(todoData.description, 150)
+            : "Описание..."}
         </div>
       </div>
       <TodoDetailModal
