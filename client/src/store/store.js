@@ -80,6 +80,7 @@ export default class Store {
     try {
       const response = await TodoService.createTodo(categoryId, todo);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -90,6 +91,7 @@ export default class Store {
 
       const response = await TodoService.updateTodo(todo);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -98,6 +100,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteTodo(todoId);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -106,6 +109,7 @@ export default class Store {
     try {
       const response = await TodoService.updateCategory(category);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -114,6 +118,7 @@ export default class Store {
     try {
       const response = await TodoService.createCategory(projectId, data);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -122,6 +127,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteCategory(id);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -130,6 +136,7 @@ export default class Store {
     try {
       const response = await TodoService.getProject(id);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -138,6 +145,7 @@ export default class Store {
     try {
       const response = await TodoService.createProject(data);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -146,6 +154,7 @@ export default class Store {
     try {
       const response = await TodoService.updateProject(project);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }
@@ -154,6 +163,7 @@ export default class Store {
     try {
       const response = await TodoService.deleteProject(project);
       this.getTodos();
+      this.getUpcoming();
       return response;
     } catch (e) {}
   }

@@ -20,7 +20,10 @@ class CategoryController {
     try {
       const { projectId } = req.params;
       const data = req.body;
-      const result = await this.categoryService.create(projectId, data);
+      const result = await this.categoryService.create(projectId, {
+        ...data,
+        project: projectId,
+      });
       res.json(result);
     } catch (e) {}
   };

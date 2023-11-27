@@ -3,6 +3,7 @@ export default class TodoDTO {
   description: string;
   priority: number;
   date?: Date;
+  category: string;
 
   constructor(data: any) {
     ({
@@ -10,6 +11,7 @@ export default class TodoDTO {
       description: this.description,
       priority: this.priority,
       date: this.date,
+      category: this.category,
     } = data);
   }
 }

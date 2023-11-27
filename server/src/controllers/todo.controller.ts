@@ -34,11 +34,10 @@ class TodoController {
     try {
       const { categoryId } = req.params;
       const data = req.body;
-      const result = await this.todoService.create(
-        req.user.id,
-        categoryId,
-        data
-      );
+      const result = await this.todoService.create(req.user.id, categoryId, {
+        ...data,
+        category: categoryId,
+      });
       res.json(result);
     } catch (e) {}
   };

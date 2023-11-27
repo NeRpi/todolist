@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { Context } from "../index";
 import ColapsedInlineMenu from "./Menu/ColapsedInlineMenu";
@@ -19,6 +19,7 @@ const Home = () => {
       <Routes>
         <Route path="/" element={<UpcomingPage />} />
         <Route path="/projects/:projectId" element={<ListPage />} />
+        <Route path="/*" element={<Navigate to="/" />} />
       </Routes>
     </div>
   );

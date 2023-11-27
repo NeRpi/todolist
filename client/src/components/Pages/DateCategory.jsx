@@ -9,7 +9,12 @@ const DateCategory = ({ dates }) => {
       {Object.keys(dates).map((date) => (
         <Collapse.Panel header={date} key={date}>
           {dates[date].map((todo) => (
-            <TodoItem todoData={todo} key={todo._id} />
+            <TodoItem
+              todoData={todo}
+              key={todo._id}
+              projectId={todo.project}
+              categoryId={todo.category}
+            />
           ))}
         </Collapse.Panel>
       ))}

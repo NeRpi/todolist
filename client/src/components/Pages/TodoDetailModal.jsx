@@ -63,6 +63,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
         description,
         date: dueDate,
         priority,
+        category,
       });
     } else if (mode === "edit") {
       if (data.categoryId !== category) {
@@ -72,6 +73,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
           description,
           date: dueDate,
           priority,
+          category,
         });
       } else {
         store.updateTodo({

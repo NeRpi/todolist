@@ -22,9 +22,15 @@ export default class TodoRepository {
       const user = await User.findById(userId);
       if (!user) throw ApiError.forbidden("Invalid user id");
 
-      const todosPromises = user?.todos.map(
-        async (todoId: Types.ObjectId) => await Todo.findById(todoId)
-      );
+      const todosPromises = user?.todos.map(async (todoId) => {
+        const todo = await Todo.findById(todoId);
+        if (todo?.category) {
+          const category = await Category.findById(todo.category);
+          if (category && category.project) todo.project = category.project;
+        }
+        return todo;
+      });
+
       const todosWithDate = (await Promise.all(todosPromises)).filter(
         (todo) => todo?.date
       );
@@ -34,6 +40,7 @@ export default class TodoRepository {
         acc[dateKey].push(todo!);
         return acc;
       }, {} as Record<string, ITodo[]>);
+
       const sortedKeys = Object.keys(groupedTodos).sort(
         (a, b) => new Date(a).getTime() - new Date(b).getTime()
       );
