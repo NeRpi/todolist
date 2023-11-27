@@ -1,110 +1,145 @@
 import { makeAutoObservable } from "mobx";
 import TodoService from "../services/TodoService";
-
-const monthNames = [
-  "Январь",
-  "Февраль",
-  "Март",
-  "Апрель",
-  "Май",
-  "Июнь",
-  "Июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь",
-];
+import AuthService from "../services/AuthService";
+import axios from "axios";
+import { API_URL } from "../http";
 
 export default class Store {
   isAuth = false;
-  todoList = [];
-  daylyList = {};
-  upcomingList = {};
-  incomingList = {};
-  projectList = {};
+  projectList = [];
   count = 0;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  async getTodos() {
-    TodoService.getTodos().then((response) => {
-      this.todoList = response.data;
-      this.setTodos();
-    });
+  async registration(username, password) {
+    try {
+      const response = await AuthService.registration(username, password);
+      localStorage.setItem("token", response.data.accessToken);
+      this.isAuth = true;
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
   }
 
-  setTodos() {
-    this.daylyList = {};
-    this.upcomingList = {};
-    this.incomingList = {};
-    this.projectList = {};
-    this.todoList.forEach((todo) => {
-      if (todo.date) {
-        const todoDate = new Date(todo.date);
-        const date = `${todoDate.getDate()} ${
-          monthNames[todoDate.getMonth()]
-        } ${todoDate.getFullYear()}
-        `;
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+  async login(username, password) {
+    try {
+      const response = await AuthService.login(username, password);
+      localStorage.setItem("token", response.data.accessToken);
+      this.isAuth = true;
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
+  }
 
-        if (todoDate < today) {
-          if (this.upcomingList["Просрочено"])
-            this.upcomingList["Просрочено"].push(todo);
-          else this.upcomingList["Просрочено"] = [todo];
-          if (this.daylyList["Просрочено"])
-            this.daylyList["Просрочено"].push(todo);
-          else this.daylyList["Просрочено"] = [todo];
-        } else if (todoDate.toDateString() === today.toDateString()) {
-          if (this.upcomingList[date]) this.upcomingList[date].push(todo);
-          else this.upcomingList[date] = [todo];
-          if (this.daylyList[date]) this.daylyList[date].push(todo);
-          else this.daylyList[date] = [todo];
-        } else {
-          if (this.upcomingList[date]) this.upcomingList[date].push(todo);
-          else this.upcomingList[date] = [todo];
+  async logout() {
+    try {
+      await AuthService.logout();
+      localStorage.removeItem("token");
+      this.isAuth = false;
+    } catch (e) {
+      console.log(e.response.data.message);
+    }
+  }
+
+  async checkAuth() {
+    try {
+      const response = await axios.post(
+        `${API_URL}/auth/refresh`,
+        {},
+        {
+          withCredentials: true,
         }
-      }
-      if (todo.project && todo.project !== "") {
-        if (this.projectList[todo.project])
-          this.projectList[todo.project].push(todo);
-        else this.projectList[todo.project] = [todo];
-      } else {
-        if (this.incomingList[todo.priority])
-          this.incomingList[todo.priority].push(todo);
-        else this.incomingList[todo.priority] = [todo];
-      }
+      );
+      localStorage.setItem("token", response.data.accessToken);
+      this.isAuth = true;
+    } catch (e) {}
+  }
+
+  async getTodos() {
+    TodoService.getAll().then((response) => {
+      this.projectList = response.data.projects;
     });
   }
 
-  async createTodo(todo) {
-    await TodoService.createTodo(todo);
+  async createTodo(categoryId, todo) {
+    try {
+      const response = await TodoService.createTodo(categoryId, todo);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
   async updateTodo(todo) {
-    await TodoService.updateTodo(todo);
+    try {
+      const response = await TodoService.updateTodo(todo);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
   async deleteTodo(todoId) {
-    await TodoService.deleteTodo(todoId);
+    try {
+      const response = await TodoService.deleteTodo(todoId);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
   async updateCategory(category) {
-    await TodoService.updateCategory(category);
+    try {
+      const response = await TodoService.updateCategory(category);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
-  async deleteCategory(category) {
-    await TodoService.deleteCategory(category);
+  async createCategory(projectId, data) {
+    try {
+      const response = await TodoService.createCategory(projectId, data);
+      this.getTodos();
+      return response;
+    } catch (e) {}
+  }
+
+  async deleteCategory(id) {
+    try {
+      const response = await TodoService.deleteCategory(id);
+      this.getTodos();
+      return response;
+    } catch (e) {}
+  }
+
+  async getProject(id) {
+    try {
+      const response = await TodoService.getProject(id);
+      this.getTodos();
+      return response;
+    } catch (e) {}
+  }
+
+  async createProject(data) {
+    try {
+      const response = await TodoService.createProject(data);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
   async updateProject(project) {
-    await TodoService.updateProject(project);
+    try {
+      const response = await TodoService.updateProject(project);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 
   async deleteProject(project) {
-    await TodoService.deleteProject(project);
+    try {
+      const response = await TodoService.deleteProject(project);
+      this.getTodos();
+      return response;
+    } catch (e) {}
   }
 }

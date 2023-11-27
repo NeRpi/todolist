@@ -1,56 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Layout, Button, Menu } from "antd";
 import "./ColapsedInlineMenu.css";
 import {
-  CalendarOutlined,
-  InboxOutlined,
-  ScheduleOutlined,
-  ProjectOutlined,
   MenuOutlined,
   ProfileOutlined,
+  LogoutOutlined,
+  PlusCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
-import { autorun } from "mobx";
+import { observer } from "mobx-react-lite";
+import ProjectAddModal from "./ProjectAddModel";
 
 const CollapsedInlineMenu = () => {
   const { store } = useContext(Context);
   const [collapsed, setCollapsed] = useState(false);
-  const [items, setItems] = useState([
-    { label: "Входящие", key: "/", icon: <InboxOutlined /> },
-    { label: "Сегодня", key: "/today", icon: <ScheduleOutlined /> },
-    { label: "Предстоящие", key: "/upcoming", icon: <CalendarOutlined /> },
-    {
-      label: "Мои проекты",
-      key: "projects",
-      icon: <ProjectOutlined />,
-      children: [],
-    },
-  ]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const disposer = autorun(() => {
-      const newItems = [
-        ...items.slice(0, -1),
-        {
-          label: "Мои проекты",
-          key: "projects",
-          icon: <ProjectOutlined />,
-          children: Object.keys(store.projectList).map((val) => ({
-            label: val,
-            key: `/projects/${val}`,
-            icon: <ProfileOutlined />,
-          })),
-        },
-      ];
-      setItems(newItems);
-    });
-
-    return () => {
-      disposer();
-    };
-  }, [store]);
 
   function toggleCollapsed() {
     setCollapsed(!collapsed);
@@ -61,26 +27,56 @@ const CollapsedInlineMenu = () => {
   }
 
   return (
-    <Layout.Sider width="15vw" className="sider" collapsed={collapsed}>
-      <div style={{ textAlign: "center" }}>
-        <Button
-          style={{ backgroundColor: "transparent", marginTop: "10px" }}
-          onClick={toggleCollapsed}
+    <div>
+      <Layout.Sider width="15vw" className="sider" collapsed={collapsed}>
+        <div
+          style={{
+            textAlign: "center",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
         >
-          <MenuOutlined />
-        </Button>
-      </div>
-      <Menu
-        defaultSelectedKeys={["1"]}
-        defaultOpenKeys={["sub1"]}
-        mode="inline"
-        theme="dark"
-        collapsed={collapsed}
-        items={items}
-        onClick={handleMenuClick}
+          <Button
+            style={{ backgroundColor: "transparent", marginTop: "10px" }}
+            onClick={toggleCollapsed}
+          >
+            <MenuOutlined />
+          </Button>
+          <Button
+            style={{ backgroundColor: "transparent", marginTop: "10px" }}
+            onClick={() => store.logout()}
+          >
+            <LogoutOutlined />
+          </Button>
+        </div>
+        <Menu
+          defaultSelectedKeys={["1"]}
+          defaultOpenKeys={["sub1"]}
+          mode="inline"
+          theme="dark"
+          collapsed={collapsed}
+          onClick={handleMenuClick}
+        >
+          <Menu.Item
+            key={""}
+            icon={<PlusCircleOutlined />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Добавить проект
+          </Menu.Item>
+          {store.projectList.map((val) => (
+            <Menu.Item key={`/projects/${val._id}`} icon={<ProfileOutlined />}>
+              {val.name}
+            </Menu.Item>
+          ))}
+        </Menu>
+      </Layout.Sider>
+      <ProjectAddModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
-    </Layout.Sider>
+    </div>
   );
 };
 
-export default CollapsedInlineMenu;
+export default observer(CollapsedInlineMenu);

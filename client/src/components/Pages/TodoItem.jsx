@@ -4,7 +4,7 @@ import TodoDetailModal from "./TodoDetailModal";
 import "./TodoItem.css";
 import { Context } from "../..";
 
-const TodoItem = ({ todoData }) => {
+const TodoItem = ({ todoData, projectId, categoryId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { store } = useContext(Context);
 
@@ -13,6 +13,7 @@ const TodoItem = ({ todoData }) => {
       store.deleteTodo(todoData._id);
     }
   };
+
   return (
     <div className="todo-item">
       <Checkbox className="check-button" onChange={handleChecked} />
@@ -26,7 +27,7 @@ const TodoItem = ({ todoData }) => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         mode="edit"
-        data={todoData}
+        data={{ todoData, projectId, categoryId }}
       />
     </div>
   );

@@ -1,13 +1,15 @@
 export default class UserDTO {
+  id: string;
   username: string;
   password: string;
-  todos: string;
+  projects: string[];
 
   constructor(data: any) {
     ({
+      id: this.id,
       username: this.username,
       password: this.password,
-      todos: this.todos,
+      projects: this.projects,
     } = data);
   }
 }

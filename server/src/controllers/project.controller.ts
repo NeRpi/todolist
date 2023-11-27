@@ -1,16 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import TodoService from "../services/todo.service.ts";
+import ProjectService from "../services/project.service.ts";
 
-class TodoController {
-  private todoService: TodoService;
+class ProjectController {
+  private projectService: ProjectService;
 
   constructor() {
-    this.todoService = new TodoService();
+    this.projectService = new ProjectService();
   }
 
   getAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await this.todoService.getAll(req.user.id);
+      const result = await this.projectService.getAll(req.user.id);
       res.json(result);
     } catch (e) {}
   };
@@ -18,20 +18,15 @@ class TodoController {
   getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const result = await this.todoService.getOne(id);
+      const result = await this.projectService.getOne(id);
       res.json(result);
     } catch (e) {}
   };
 
   create = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { categoryId } = req.params;
       const data = req.body;
-      const result = await this.todoService.create(
-        req.user.id,
-        categoryId,
-        data
-      );
+      const result = await this.projectService.create(req.user.id, data);
       res.json(result);
     } catch (e) {}
   };
@@ -40,7 +35,7 @@ class TodoController {
     try {
       const { id } = req.params;
       const data = req.body;
-      const result = await this.todoService.update(id, data);
+      const result = await this.projectService.update(id, data);
       res.json(result);
     } catch (e) {}
   };
@@ -48,10 +43,10 @@ class TodoController {
   delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const result = await this.todoService.delete(id);
+      const result = await this.projectService.delete(id);
       res.json(result);
     } catch (e) {}
   };
 }
 
-export default new TodoController();
+export default new ProjectController();

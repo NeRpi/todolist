@@ -1,61 +1,102 @@
 import React, { useContext, useEffect, useState } from "react";
-import "./ListPage.css";
-import TodoDetailModal from "./TodoDetailModal";
-import Category from "./Category";
-import { Button } from "antd";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-import { autorun } from "mobx";
+import { Button, Input } from "antd";
 import { Context } from "../..";
+import TodoDetailModal from "./TodoDetailModal";
+import CategoryAddModal from "./CategoryAddModel";
+import Category from "./Category";
+
+import "./ListPage.css";
+import { observer } from "mobx-react-lite";
 
 const ListPage = () => {
   const { store } = useContext(Context);
-  const [categories, setCategories] = useState({});
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { projectName } = useParams();
+  const [isTodo, setIsTodo] = useState(false);
+  const [isCategory, setIsCategory] = useState(false);
+  const [btnVisible, setBtnVisible] = useState(false);
+  const [project, setProject] = useState({});
 
-  const generateCategories = (projects) => {
-    if (!projects) return {};
-
-    return projects.reduce((acc, project) => {
-      const { category } = project;
-
-      if (category) {
-        acc[category] = acc[category] || [];
-        acc[category].push(project);
-      }
-
-      return acc;
-    }, {});
-  };
+  const [title, setTitle] = useState(project.name || "");
+  const { projectId } = useParams();
 
   useEffect(() => {
-    const disposer = autorun(() => {
-      const updateTodos = store.projectList[projectName];
-      setCategories(generateCategories(updateTodos));
-    });
+    store.getProject(projectId).then((response) => setProject(response.data));
+  }, [store, projectId]);
 
-    return () => {
-      disposer();
-    };
-  }, [store, projectName]);
+  useEffect(() => {
+    setBtnVisible(title !== project.name);
+  }, [title, project]);
+
+  useEffect(() => {
+    setTitle(project.name);
+  }, [project]);
+
+  const onClickUpdate = (e) => {
+    e.stopPropagation();
+    setProject({ ...project, name: title });
+    store.updateProject({
+      ...project,
+      id: project._id,
+      name: title,
+    });
+  };
+
+  const onHandleInput = (e) => {
+    setTitle(e.target.value);
+    setBtnVisible(e.target.value !== project.name);
+  };
 
   return (
-    <div className="list-page">
+    <div key={projectId} className="list-page">
       <header className="header-list">
-        <h2>{projectName}</h2>
-        <div className="add-buttons">
-          <Button onClick={() => setIsModalOpen(true)}>Добавить задачу</Button>
-          <Button>Добавить раздел</Button>
+        <div className="header-content">
+          <Input
+            style={{ margin: "10px 0px" }}
+            value={title}
+            onChange={onHandleInput}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <Button
+            style={{
+              margin: "5px",
+              visibility: btnVisible ? "visible" : "hidden",
+              width: "50px",
+            }}
+            icon={<CheckOutlined />}
+            onClick={onClickUpdate}
+          />
+          <Button
+            style={{
+              visibility: btnVisible ? "visible" : "hidden",
+              width: "50px",
+            }}
+            icon={<CloseOutlined />}
+            onClick={(e) => {
+              setTitle(project.name);
+              e.stopPropagation();
+            }}
+          />
+          <Button style={{ margin: "0 5px" }} onClick={() => setIsTodo(true)}>
+            Добавить задачу
+          </Button>
+          <Button onClick={() => setIsCategory(true)}>Добавить раздел</Button>
         </div>
       </header>
-      <Category categories={categories} />
+      <Category categories={project.categories} projectId={projectId} />
       <TodoDetailModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isTodo}
+        onClose={() => setIsTodo(false)}
+        data={{ projectId }}
         mode="create"
+      />
+      <CategoryAddModal
+        isOpen={isCategory}
+        onClose={() => setIsCategory(false)}
+        projectId={projectId}
       />
     </div>
   );
 };
 
-export default ListPage;
+export default observer(ListPage);

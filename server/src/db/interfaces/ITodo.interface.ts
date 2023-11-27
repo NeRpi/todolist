@@ -3,5 +3,4 @@ export default interface ITodo {
   description: string;
   priority: number;
   date?: Date;
-  position?: number;
 }

@@ -1,0 +1,28 @@
+.edit-panel-header {
+  display: flex;
+  margin: 0 10;
+  width: 100%;
+  background-color: transparent;
+  align-items: center;
+}
+
+.ant-collapse-expand-icon {
+  display: flex;
+  align-items: center;
+}
+
+.ant-collapse-header-text {
+  width: 100%;
+}
+
+:where(.css-dev-only-do-not-override-zcfrx9).ant-collapse
+  .ant-collapse-content {
+  border: none;
+}
+
+.ant-collapse-header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 10px;
+}

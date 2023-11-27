@@ -1,36 +1,52 @@
 import $api from "../http/index";
 
 export default class TodoService {
-  static async getTodos() {
-    return $api.get("/todo/65622544fb93514574206cde");
+  static async getAll() {
+    return $api.get("/projects");
   }
 
-  static async createTodo(data) {
-    return $api.post("/todo/65622544fb93514574206cde", data);
+  static async getTodos() {
+    return $api.get("/todos");
+  }
+
+  static async createTodo(categoryId, data) {
+    return $api.post(`/todos/${categoryId}`, data);
   }
 
   static async updateTodo(data) {
-    return $api.put(`/todo/65622544fb93514574206cde/${data.id}`, data);
+    return $api.put(`/todos/${data.id}`, data);
   }
 
   static async deleteTodo(id) {
-    console.log(id);
-    return $api.delete(`/todo/65622544fb93514574206cde/${id}`);
+    return $api.delete(`/todos//${id}`);
+  }
+
+  static async createCategory(projectId, data) {
+    return $api.post(`/categories/${projectId}`, data);
   }
 
   static async updateCategory(data) {
-    return $api.put("/todo/65622544fb93514574206cde/category", data);
+    return $api.put(`/categories/${data.id}`, data);
   }
 
-  static async deleteCategory(data) {
-    return $api.delete("/todo/65622544fb93514574206cde/category", data);
+  static async deleteCategory(id) {
+    return $api.delete(`/categories/${id}`);
+  }
+
+  static async createProject(data) {
+    return $api.post("/projects/", data);
+  }
+
+  static async getProject(id) {
+    return $api.get(`/projects/${id}`);
   }
 
   static async updateProject(data) {
-    return $api.put("/todo/65622544fb93514574206cde/project", data);
+    console.log(data);
+    return $api.put(`/projects/${data.id}`, data);
   }
 
-  static async deleteProject(data) {
-    return $api.delete("/todo/65622544fb93514574206cde/project", data);
+  static async deleteProject(id) {
+    return $api.delete(`/projects/${id}`);
   }
 }

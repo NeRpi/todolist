@@ -8,26 +8,26 @@ import "./TodoDetailModal.css";
 import { autorun } from "mobx";
 
 const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
+  const { store } = useContext(Context);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [project, setProject] = useState(1);
-  const [category, setCategory] = useState(1);
+  const [project, setProject] = useState(data.projectId);
+  const [category, setCategory] = useState(data.categoryId);
   const [dueDate, setDueDate] = useState(null);
   const [priority, setPriority] = useState(4);
 
-  const [projects, setProjects] = useState({});
+  const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
-
-  const { store } = useContext(Context);
 
   useEffect(() => {
     if (mode === "edit" && data) {
-      setName(data.name || "");
-      setDescription(data.description || "");
-      setProject(data.project || "");
-      setCategory(data.category || "");
-      setDueDate(dayjs(data.date) || null);
-      setPriority(data.priority || 1);
+      setName(data.todoData.name || "");
+      setDescription(data.todoData.description || "");
+      setProject(data.projectId || "");
+      setCategory(data.categoryId || "");
+      setDueDate(dayjs(data.todoData.date) || null);
+      setPriority(data.todoData.priority || 1);
     }
   }, [mode, data]);
 
@@ -42,22 +42,27 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
   }, [store]);
 
   useEffect(() => {
-    if (projects[project]) setCategories(Object.keys(projects[project]));
+    let findProject;
+    if (project) findProject = projects.find((val) => val._id === project);
+    if (findProject) setCategories(findProject.categories);
   }, [projects, project]);
 
   const onHandleClick = () => {
     if (mode === "create") {
-      store.createTodo({ name, description, project, dueDate, priority });
+      store.createTodo(category, { name, description, dueDate, priority });
     } else if (mode === "edit") {
-      store.updateTodo({
-        id: data._id,
-        name,
-        description,
-        project,
-        category,
-        date: dueDate,
-        priority,
-      });
+      if (data.categoryId !== category) {
+        store.deleteTodo(data.todoData._id);
+        store.createTodo(category, { name, description, dueDate, priority });
+      } else {
+        store.updateTodo({
+          id: data.todoData._id,
+          name,
+          description,
+          date: dueDate,
+          priority,
+        });
+      }
     }
 
     onClose();
@@ -99,12 +104,9 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
               value={project}
               style={{ width: "100%" }}
               onChange={(value) => setProject(value)}
-              options={[
-                { label: "Входящие", value: "" },
-                ...Object.keys(projects).map((val) => {
-                  return { label: val, value: val };
-                }),
-              ]}
+              options={projects.map((val) => {
+                return { label: val.name, value: val._id };
+              })}
             />
             <hr />
             <span>Раздел</span>
@@ -113,7 +115,7 @@ const TodoDetailModal = ({ isOpen, onClose, mode, data }) => {
               style={{ width: "100%" }}
               onChange={(value) => setCategory(value)}
               options={categories.map((val, index) => {
-                return { label: val, value: index };
+                return { label: val.name, value: val._id };
               })}
             />
             <hr />

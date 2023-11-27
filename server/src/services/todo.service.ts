@@ -8,21 +8,25 @@ export default class TodoService {
     this.todoRepo = new TodoRepository();
   }
 
-  public async getOne(id: string) {
-    return await this.todoRepo.getById(id);
+  public async getAll(userId: string) {
+    return await this.todoRepo.getAll(userId);
   }
 
-  public async create(data: any) {
+  public async getOne(todoId: string) {
+    return await this.todoRepo.getById(todoId);
+  }
+
+  public async create(userId: string, categoryId: string, data: any) {
     const todoDTO = new TodoDTO(data);
-    return await this.todoRepo.create(todoDTO);
+    return await this.todoRepo.create(userId, categoryId, todoDTO);
   }
 
-  public async update(id: string, data: any) {
+  public async update(todoId: string, data: any) {
     const todoDTO = new TodoDTO(data);
-    return await this.todoRepo.updateById(id, todoDTO);
+    return await this.todoRepo.updateById(todoId, todoDTO);
   }
 
-  public async delete(id: string) {
-    return await this.todoRepo.deleteById(id);
+  public async delete(todoId: string) {
+    return await this.todoRepo.deleteById(todoId);
   }
 }

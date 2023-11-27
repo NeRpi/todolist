@@ -3,7 +3,8 @@ export default class TodoDTO {
   description: string;
   priority: number;
   date?: Date;
-  position?: number;
+  oldCategory?: string;
+  newCategory?: string;
 
   constructor(data: any) {
     ({
@@ -11,7 +12,8 @@ export default class TodoDTO {
       description: this.description,
       priority: this.priority,
       date: this.date,
-      position: this.position,
+      oldCategory: this.oldCategory,
+      newCategory: this.newCategory,
     } = data);
   }
 }

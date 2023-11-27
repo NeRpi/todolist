@@ -6,7 +6,6 @@ let todoSchema = new Schema<ITodo>({
   description: { type: String, default: "" },
   priority: { type: Number, default: 4 },
   date: { type: Date },
-  position: { type: Number },
 });
 
 export default model<ITodo>("Todos", todoSchema);
