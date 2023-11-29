@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
-import { Context } from "../../App";
 import { createStackNavigator } from "@react-navigation/stack";
+import React, { useContext } from "react";
+
 import Login from "./Login";
 import Registration from "./Registration";
-import Logout from "./Logout";
+import { Context } from "../../App";
 
 const Stack = createStackNavigator();
 

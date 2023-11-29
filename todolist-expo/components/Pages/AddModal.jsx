@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   Modal,
-  Button,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -21,7 +20,7 @@ const AddModal = ({ visible, onClose, onOk }) => {
   return (
     <Modal
       animationType="slide"
-      transparent={true}
+      transparent
       visible={visible}
       onRequestClose={onClose}
     >

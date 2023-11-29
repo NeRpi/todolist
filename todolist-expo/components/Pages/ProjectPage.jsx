@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { Context } from "../../App";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { observer } from "mobx-react-lite";
+import { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import CategoryDropDown from "./CategoryDropDown";
-import AddModal from "./AddModal";
-import { observer } from "mobx-react-lite";
 import Icon from "react-native-vector-icons/Feather";
+
+import AddModal from "./AddModal";
+import CategoryDropDown from "./CategoryDropDown";
+import { Context } from "../../App";
 
 const ProjectPage = () => {
   const { store } = useContext(Context);
@@ -78,7 +79,7 @@ const ProjectPage = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={{ display: btnVisible ? "block" : "none" }}
-          onPress={() => setTitle(oldTitle)}
+          onPress={() => setTitle(project?.name)}
         >
           <Icon name="x" size={20} color="white" />
         </TouchableOpacity>

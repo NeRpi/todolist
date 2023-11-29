@@ -1,12 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
-import { FlatList, StyleSheet, Text, TextInput, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import "react-native-vector-icons";
 import Icon from "react-native-vector-icons/Feather";
-import { useNavigation } from "@react-navigation/native";
+
 import CategoryInput from "./CategoryInput";
-import { Context } from "../../App";
 import TodoItem from "./TodoItem";
+import { Context } from "../../App";
 
 const CategoryDropDown = ({ category, projectId }) => {
   const [isDrop, setIsDrop] = useState(false);

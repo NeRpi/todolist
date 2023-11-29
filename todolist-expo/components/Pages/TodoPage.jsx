@@ -1,18 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import CalendarPicker from "react-native-calendar-picker";
-import { Context } from "../../App";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { View } from "react-native-animatable";
 import { autorun } from "mobx";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
+import { View } from "react-native-animatable";
+
 import PickerSelect from "./PickerSelect";
+import { Context } from "../../App";
 
 const TodoPage = () => {
   const { store } = useContext(Context);
@@ -26,7 +19,6 @@ const TodoPage = () => {
   const [category, setCategory] = useState(categoryId);
   const [dueDate, setDueDate] = useState(null);
   const [priority, setPriority] = useState(4);
-  const [modalVisible, setModalVisible] = useState(false);
 
   const [projects, setProjects] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -122,7 +114,7 @@ const TodoPage = () => {
         value={description}
         onChangeText={setDescription}
         placeholder="Description..."
-        multiline={true}
+        multiline
         numberOfLines={28}
         style={styles.textArea}
         textAlignVertical="top"

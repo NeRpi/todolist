@@ -1,11 +1,12 @@
-import { useContext, useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Context } from "../../App";
-import { observer } from "mobx-react-lite";
-import { FlatList } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { observer } from "mobx-react-lite";
+import { useContext, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Feather";
+
 import AddModal from "./AddModal";
+import { Context } from "../../App";
 
 const MenuPage = () => {
   const { store } = useContext(Context);

@@ -27,7 +27,7 @@ const PickerSelect = ({ options, onChange, selectedValue }) => {
 
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: "rgb(0, 10, 20)",
-    padding: 10,
   },
   pickerValue: {
     display: "flex",

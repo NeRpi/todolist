@@ -1,12 +1,12 @@
-import { StyleSheet } from "react-native";
-import Auth from "./components/Auth/Auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Store from "./store/store";
-import { createContext, useContext, useEffect } from "react";
-import Home from "./components/Home";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { observer } from "mobx-react-lite";
+import { createContext, useContext, useEffect } from "react";
+
+import Auth from "./components/Auth/Auth";
+import Home from "./components/Home";
+import Store from "./store/store";
 
 const store = new Store();
 const Stack = createStackNavigator();
@@ -43,15 +43,6 @@ const App = observer(() => {
       </NavigationContainer>
     </Context.Provider>
   );
-});
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 });
 
 export default App;

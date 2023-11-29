@@ -93,8 +93,6 @@ export default class Store {
 
   async updateTodo(todo) {
     try {
-      console.log(todo);
-
       const response = await TodoService.updateTodo(todo);
       this.getTodos();
       this.getUpcoming();

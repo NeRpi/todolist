@@ -1,9 +1,10 @@
-import { useContext, useEffect } from "react";
-import { Context } from "../App";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useContext, useEffect } from "react";
+
 import MenuPage from "./Pages/MenuPage";
 import ProjectPage from "./Pages/ProjectPage";
 import TodoPage from "./Pages/TodoPage";
+import { Context } from "../App";
 
 const Stack = createStackNavigator();
 
