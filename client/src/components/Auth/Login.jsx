@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Context } from "../..";
 import "./Login.css";
 
-const LoginForm = ({ onFinish }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,7 +18,7 @@ const LoginForm = ({ onFinish }) => {
   };
 
   return (
-    <Form className="login-form" onFinish={onFinish}>
+    <Form className="login-form">
       <div className="login-header">Login</div>
       <Form.Item
         name="username"

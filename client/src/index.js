@@ -7,9 +7,7 @@ import Store from "./store/store";
 
 const store = new Store();
 
-export const Context = createContext({
-  store,
-});
+export const Context = createContext({ store });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
