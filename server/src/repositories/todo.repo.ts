@@ -1,4 +1,3 @@
-import { Types } from "mongoose";
 import Category from "../db/models/category.model.ts";
 import Todo from "../db/models/todo.model.ts";
 import User from "../db/models/user.model.ts";

@@ -13,7 +13,9 @@ class CategoryController {
       const { id } = req.params;
       const result = await this.categoryService.getOne(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   create = async (req: Request, res: Response, next: NextFunction) => {
@@ -25,7 +27,9 @@ class CategoryController {
         project: projectId,
       });
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   update = async (req: Request, res: Response, next: NextFunction) => {
@@ -34,7 +38,9 @@ class CategoryController {
       const data = req.body;
       const result = await this.categoryService.update(id, data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
@@ -42,7 +48,9 @@ class CategoryController {
       const { id } = req.params;
       const result = await this.categoryService.delete(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 }
 

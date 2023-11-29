@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import routers from "./routes/index.ts";

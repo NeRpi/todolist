@@ -1,9 +1,11 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import TodoService from "../services/TodoService";
-import AuthService from "../services/AuthService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import _ from "lodash";
+import { makeAutoObservable, runInAction } from "mobx";
+
 import { API_URL } from "../http";
+import AuthService from "../services/AuthService";
+import TodoService from "../services/TodoService";
 
 export default class Store {
   isAuth = false;
@@ -18,9 +20,9 @@ export default class Store {
     try {
       const response = await AuthService.registration(
         username.trim(),
-        password.trim()
+        password.trim(),
       );
-      localStorage.setItem("token", response.data.accessToken);
+      await AsyncStorage.setItem("token", response.data.accessToken);
       this.isAuth = true;
     } catch (e) {
       console.log(e.response.data.message);
@@ -31,9 +33,9 @@ export default class Store {
     try {
       const response = await AuthService.login(
         username.trim(),
-        password.trim()
+        password.trim(),
       );
-      localStorage.setItem("token", response.data.accessToken);
+      await AsyncStorage.setItem("token", response.data.accessToken);
       this.isAuth = true;
     } catch (e) {
       console.log(e.response.data.message);
@@ -43,7 +45,7 @@ export default class Store {
   async logout() {
     try {
       await AuthService.logout();
-      localStorage.removeItem("token");
+      await AsyncStorage.removeItem("token");
       this.isAuth = false;
     } catch (e) {
       console.log(e.response.data.message);
@@ -57,11 +59,13 @@ export default class Store {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
-      localStorage.setItem("token", response.data.accessToken);
+      await AsyncStorage.setItem("token", response.data.accessToken);
       this.isAuth = true;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getTodos() {
@@ -88,7 +92,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async updateTodo(todo) {
@@ -97,7 +103,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async deleteTodo(todoId) {
@@ -106,7 +114,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async updateCategory(category) {
@@ -115,7 +125,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async createCategory(projectId, data) {
@@ -124,7 +136,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async deleteCategory(id) {
@@ -133,7 +147,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getProject(id) {
@@ -142,7 +158,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async createProject(data) {
@@ -151,7 +169,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async updateProject(project) {
@@ -160,7 +180,9 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async deleteProject(project) {
@@ -169,6 +191,8 @@ export default class Store {
       this.getTodos();
       this.getUpcoming();
       return response;
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 }

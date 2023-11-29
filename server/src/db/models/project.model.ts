@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import IProject from "../interfaces/IProject.inteface.ts";
 
-let projectSchema = new Schema<IProject>({
+const projectSchema = new Schema<IProject>({
   name: { type: String, required: true },
   categories: [{ type: Schema.ObjectId, ref: "Categories" }],
 });

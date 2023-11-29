@@ -12,14 +12,18 @@ class TodoController {
     try {
       const result = await this.todoService.getAll(req.user.id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   getUpcoming = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await this.todoService.getUpcoming(req.user.id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   getOne = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +31,9 @@ class TodoController {
       const { id } = req.params;
       const result = await this.todoService.getOne(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   create = async (req: Request, res: Response, next: NextFunction) => {
@@ -39,7 +45,9 @@ class TodoController {
         category: categoryId,
       });
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   update = async (req: Request, res: Response, next: NextFunction) => {
@@ -48,7 +56,9 @@ class TodoController {
       const data = req.body;
       const result = await this.todoService.update(id, data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
@@ -56,7 +66,9 @@ class TodoController {
       const { id } = req.params;
       const result = await this.todoService.delete(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 }
 

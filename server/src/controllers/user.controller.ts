@@ -13,7 +13,9 @@ class UserController {
       const { id } = req.params;
       const result = await this.userService.getOne(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next(e);
+    }
   };
 
   create = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +23,9 @@ class UserController {
       const data = req.body;
       const result = await this.userService.create(data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next(e);
+    }
   };
 
   update = async (req: Request, res: Response, next: NextFunction) => {
@@ -30,7 +34,9 @@ class UserController {
       const data = req.body;
       const result = await this.userService.update(id, data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next(e);
+    }
   };
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
@@ -38,7 +44,9 @@ class UserController {
       const { id } = req.params;
       const result = await this.userService.delete(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next(e);
+    }
   };
 }
 
