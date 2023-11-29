@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import IUser from "../interfaces/IUser.interface.ts";
 
-let userSchema = new Schema<IUser>({
+const userSchema = new Schema<IUser>({
   username: { type: String, required: true },
   password: { type: String, required: true },
   projects: [{ type: Schema.ObjectId, ref: "Projects" }],

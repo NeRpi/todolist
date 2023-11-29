@@ -12,7 +12,9 @@ class ProjectController {
     try {
       const result = await this.projectService.getAll(req.user.id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   getOne = async (req: Request, res: Response, next: NextFunction) => {
@@ -20,7 +22,9 @@ class ProjectController {
       const { id } = req.params;
       const result = await this.projectService.getOne(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   create = async (req: Request, res: Response, next: NextFunction) => {
@@ -28,7 +32,9 @@ class ProjectController {
       const data = req.body;
       const result = await this.projectService.create(req.user.id, data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   update = async (req: Request, res: Response, next: NextFunction) => {
@@ -37,7 +43,9 @@ class ProjectController {
       const data = req.body;
       const result = await this.projectService.update(id, data);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
@@ -45,7 +53,9 @@ class ProjectController {
       const { id } = req.params;
       const result = await this.projectService.delete(id);
       res.json(result);
-    } catch (e) {}
+    } catch (e) {
+      next();
+    }
   };
 }
 
